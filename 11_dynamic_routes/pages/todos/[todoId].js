@@ -1,12 +1,18 @@
-import Link from 'next/link'
+import Link from "next/link"
 
-import { useRouter } from 'next/router'
+export async function getStaticProps(context) {
+  const { params } = context
+  const data = await fetch(
+    `https://jsonplaceholder.typicode.com/todos/${params.todoId}`
+  )
+  const todo = await data.json()
 
-export default function Todo() {
-  const router = useRouter()
+  return {
+    props: { todo },
+  }
+}
 
-  const todoId = router.query.todoId
-
+export default function Todo({ todo }) {
   return (
     <>
       <Link href="/todos">
